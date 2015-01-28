@@ -1,0 +1,69 @@
+
+<html>
+   <meta charset="utf-8">
+    <meta name="viewport" content="width=divice-width, initial-scale=1.0">
+    
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+    
+    <script>
+    $(function(){
+        
+        var socket = io.connect();
+        
+       $('button').click(function(){
+          /* var msg = $('#message').val();
+           alert(msg);*/
+           socket.emit('apple', {
+                name: $('#name').val(),
+                message: $('#message').val()
+           
+           });
+       }); 
+        
+            socket.on('banana', function(data){
+               var output='';
+               output += '<li>';
+               output += '<h3>' + data.name + '</h3>';
+               output += '<p>' + data.message + '</p>';
+               output += '</li>';
+                
+            $(output).prependTo('#content');
+            $('#content').listview('refresh');
+            });
+    });
+    </script>
+</head>
+<body>
+
+    <div data-role="page">
+        <div data-role="header">
+            <h1>Socket Chat</h1>            
+        </div>
+        
+            <div data-role="content">
+                <h3>Login Name</h3>
+                <input id="name" />
+                <a data-role = "button" href="#chatpage">Login Please</a>
+            </div>    
+    </div>
+    
+    <div data-role= "page" id="chatpage">
+        <div data-role="header">
+            <h1>Socket Chat</h1>
+        </div>
+        <div data-role="content">
+            <input id="message" />
+            <button>Send</button>
+            <ul id="content" data-role="listview" data-insert="true">
+            
+            </ul>
+        </div>
+    </div>
+    
+</body>
+    
+    
+</html>
